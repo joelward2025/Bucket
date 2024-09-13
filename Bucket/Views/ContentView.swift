@@ -150,10 +150,8 @@ struct ContentView: View {
                     DateSelector()
                     Rating()
                     AddImages()
-                    HStack{
-                        TagFriends()
-                        Location()
-                    }
+                    TagFriends()
+                    Location()
                     AddEvent()
                 }
                 .navigationTitle("Create Event")
