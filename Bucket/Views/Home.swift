@@ -30,7 +30,6 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack {
-                BackButton()
                 Text("My Bucket Lists")
                     .font(.largeTitle)
                     .bold()
@@ -55,28 +54,53 @@ struct HomeView: View {
                     .padding(.vertical, 10)
                 }
                 .listStyle(InsetGroupedListStyle()) // Apply a clean list style
-                // Floating "+" Button
-                Button(action: {
-                    // Action to create a new bucket list
-                    print("Create new bucket list")
-                }) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 24))
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.blue)
-                        .clipShape(Circle())
-                        .shadow(radius: 10)
+                HStack{
+                    // friends
+                    Button(action: {
+                    }) {
+                        Image(systemName: "person.3.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                            .shadow(radius: 10)
+                    }
+                    .padding()
+                    .padding(.bottom, 20)
+                    // plus button
+                    Button(action: {
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                            .shadow(radius: 10)
+                    }
+                    .padding()
+                    .padding(.bottom, 20)
+                    //
+                    Button(action: {
+                    }) {
+                        Image(systemName: "gear")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .clipShape(Circle())
+                            .shadow(radius: 10)
+                    }
+                    .padding()
+                    .padding(.bottom, 20)
                 }
-                .padding()
-                .padding(.bottom, 20) // Add padding from bottom
             }
-            .navigationBarHidden(true) // Hide default nav bar
+            .navigationBarHidden(true)
         }
     }
 }
 
-// Preview for HomeView
 struct HomeContentView: View {
     var body: some View {
         HomeView(bucketLists: sampleBucketLists)

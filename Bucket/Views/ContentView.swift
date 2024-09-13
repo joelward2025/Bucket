@@ -88,9 +88,9 @@ struct AddImages: View {
 
 struct TagFriends: View {
     var body: some View {
-        // Upload Images Button
+        // Tag Friends Button
         Button(action: {
-            // Action for uploading images
+            // Action for tagging friends
         }) {
             HStack {
                 Image(systemName: "person.fill.badge.plus")
@@ -107,9 +107,9 @@ struct TagFriends: View {
 
 struct Location: View {
     var body: some View {
-        // Upload Images Button
+        // Add Location Button
         Button(action: {
-            // Action for uploading images
+            // Action for adding location
         }) {
             HStack {
                 Image(systemName: "mappin.and.ellipse")
@@ -139,7 +139,7 @@ struct AddEvent: View {
     }
 }
 
-struct ContentView: View {
+struct CreateEvent: View {
     var body: some View {
         VStack {
             BackButton()
@@ -161,5 +161,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    CreateEvent()
 }

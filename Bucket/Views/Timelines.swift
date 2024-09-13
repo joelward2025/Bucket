@@ -99,6 +99,16 @@ struct TimelineContentView: View {
                         }
                     }
             }
+            Button(action: {
+            }) {
+                Image(systemName: "plus")
+                    .font(.system(size: 24))
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.blue)
+                    .clipShape(Circle())
+                    .shadow(radius: 10)
+            }
         }
 }
 #Preview {
