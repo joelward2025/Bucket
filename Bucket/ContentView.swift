@@ -19,6 +19,7 @@ struct EventName: View {
     var body: some View {
         TextField("Enter event name", text: $eventName)
             .textFieldStyle(RoundedBorderTextFieldStyle())
+            .border(Color.gray, width: 1)
             .padding(.horizontal)
     }
 }
@@ -149,8 +150,10 @@ struct ContentView: View {
                     DateSelector()
                     Rating()
                     AddImages()
-                    TagFriends()
-                    Location()
+                    HStack{
+                        TagFriends()
+                        Location()
+                    }
                     AddEvent()
                 }
                 .navigationTitle("Create Event")
