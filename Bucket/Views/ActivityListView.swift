@@ -34,30 +34,31 @@ struct ActivityListView: View {
     var body: some View {
         List {
             ForEach(activities) { activity in
-                ForEach(activities) { activity in
-                    NavigationLink(destination: ActivityDetailView(activity: activity)) {
-                        HStack {
-                            if let photos = activity.photos as? Set<Photo>, let photo = photos.first, let imageData = photo.imageData, let uiImage = UIImage(data: imageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 50, height: 50)
-                                    .clipped()
-                                    .cornerRadius(5)
-                            } else {
-                                Image(systemName: "photo")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 50)
-                                    .foregroundColor(.gray)
-                            }
-                            VStack(alignment: .leading) {
-                                Text(activity.name ?? "Untitled Activity")
-                                    .font(.headline)
-                                if let date = activity.plannedDate {
-                                    Text("Planned Date: \(date, formatter: dateFormatter)")
-                                        .font(.subheadline)
+                NavigationLink(destination: ActivityDetailView(activity: activity)) {
+                    HStack {
+                        if let photos = activity.photos as? Set<Photo>, let photo = photos.first, let imageData = photo.imageData, let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 50, height: 50)
+                                .clipped()
+                                .cornerRadius(5)
+                        } else {
+                            Image(systemName: "photo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.gray)
+                        }
+                        VStack(alignment: .leading) {
+                            Text(activity.name ?? "Untitled Activity")
+                                .font(.headline)
+                                .onAppear {
+                                    print("Activity ID: \(activity.activityID?.uuidString ?? "No ID"), Name: \(activity.name ?? "No Name")")
                                 }
+                            if let date = activity.plannedDate {
+                                Text("Planned Date: \(date, formatter: dateFormatter)")
+                                    .font(.subheadline)
                             }
                         }
                     }

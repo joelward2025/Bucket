@@ -79,6 +79,8 @@ struct AddActivityView: View {
     }
 
     private func addActivity() {
+        print("addActivity() called")
+        // Create a new Activity object
         let newActivity = Activity(context: viewContext)
         newActivity.activityID = UUID()
         newActivity.name = name
@@ -87,7 +89,7 @@ struct AddActivityView: View {
         if includeDate {
             newActivity.plannedDate = plannedDate
         }
-        newActivity.bucketList = bucketList // Ensure this is set correctly
+        newActivity.bucketList = bucketList // Link to the correct bucket list
 
         // Add photo if an image is selected
         if let imageData = selectedImageData {
@@ -96,16 +98,17 @@ struct AddActivityView: View {
             newPhoto.imageData = imageData
             newPhoto.uploadDate = Date()
             newPhoto.activity = newActivity
-
-            // Use the generated accessor method to add the photo to the activity's photos relationship
-            newActivity.addToPhotos(newPhoto)
+            newActivity.addToPhotos(newPhoto) // Use the accessor method
         }
 
+        // Save the context
         do {
             try viewContext.save()
+            print("Activity saved successfully.")
             presentationMode.wrappedValue.dismiss()
         } catch {
             print("Error saving new activity: \(error.localizedDescription)")
         }
+        print("addActivity() completed")
     }
 }
