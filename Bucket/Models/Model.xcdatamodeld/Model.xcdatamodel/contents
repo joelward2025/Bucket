@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Activity" representedClassName=".Activity" syncable="YES">
+        <attribute name="activityID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isCompleted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="location" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="plannedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="bucketList" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BucketList" inverseName="activities" inverseEntity="BucketList"/>
+        <relationship name="participants" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="activitiesParticipated" inverseEntity="User"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Photo" inverseName="activity" inverseEntity="Photo"/>
+    </entity>
+    <entity name="BucketList" representedClassName=".BucketList" syncable="YES">
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="listID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="activities" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="bucketList" inverseEntity="Activity"/>
+        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="bucketLists" inverseEntity="User"/>
+    </entity>
+    <entity name="Photo" representedClassName=".Photo" syncable="YES">
+        <attribute name="imageData" optional="YES" attributeType="Binary"/>
+        <attribute name="photoID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="uploadDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="activity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="photos" inverseEntity="Activity"/>
+    </entity>
+    <entity name="User" representedClassName=".User" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="profilePicture" optional="YES" attributeType="Binary"/>
+        <attribute name="userID" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="activitiesParticipated" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Activity" inverseName="participants" inverseEntity="Activity"/>
+        <relationship name="bucketLists" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BucketList" inverseName="owner" inverseEntity="BucketList"/>
+        <relationship name="friends" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="friends" inverseEntity="User"/>
+    </entity>
+</model>

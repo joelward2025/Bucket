@@ -1,17 +1,13 @@
-//
-//  BucketApp.swift
-//  Bucket
-//
-//  Created by Joel Ward on 9/7/24.
-//
-
 import SwiftUI
 
 @main
 struct BucketApp: App {
+    let persistenceController = PersistenceController.shared
+
     var body: some Scene {
         WindowGroup {
-            HomeContentView()
+            BucketListView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
