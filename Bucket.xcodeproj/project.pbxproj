@@ -10,6 +10,9 @@
 		60022B552C8CEEF000C05BEC /* BucketApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60022B542C8CEEF000C05BEC /* BucketApp.swift */; };
 		60022B592C8CEEF000C05BEC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60022B582C8CEEF000C05BEC /* Assets.xcassets */; };
 		60022B5C2C8CEEF000C05BEC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60022B5B2C8CEEF000C05BEC /* Preview Assets.xcassets */; };
+		6028ED4F2CE6814A007A0647 /* BucketListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6028ED4E2CE6814A007A0647 /* BucketListViewModel.swift */; };
+		6028ED512CE68160007A0647 /* ActivityListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6028ED502CE68160007A0647 /* ActivityListViewModel.swift */; };
+		6028ED532CE68178007A0647 /* ActivityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6028ED522CE68178007A0647 /* ActivityViewModel.swift */; };
 		6085B0072C93EA5B008B529D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6085B0062C93EA5B008B529D /* ContentView.swift */; };
 		60A0C92E2CE44C77004727B0 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 60A0C92C2CE44C77004727B0 /* Model.xcdatamodeld */; };
 		60A0C9622CE455ED004727B0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A0C9612CE455EC004727B0 /* User.swift */; };
@@ -31,6 +34,9 @@
 		60022B542C8CEEF000C05BEC /* BucketApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketApp.swift; sourceTree = "<group>"; };
 		60022B582C8CEEF000C05BEC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60022B5B2C8CEEF000C05BEC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		6028ED4E2CE6814A007A0647 /* BucketListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketListViewModel.swift; sourceTree = "<group>"; };
+		6028ED502CE68160007A0647 /* ActivityListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityListViewModel.swift; sourceTree = "<group>"; };
+		6028ED522CE68178007A0647 /* ActivityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewModel.swift; sourceTree = "<group>"; };
 		6085B0062C93EA5B008B529D /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		60A0C92D2CE44C77004727B0 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		60A0C9612CE455EC004727B0 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -126,6 +132,9 @@
 		6085B0052C93EA37008B529D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				6028ED522CE68178007A0647 /* ActivityViewModel.swift */,
+				6028ED502CE68160007A0647 /* ActivityListViewModel.swift */,
+				6028ED4E2CE6814A007A0647 /* BucketListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -209,12 +218,15 @@
 				60A0C9762CE58914004727B0 /* ActivityDetailView.swift in Sources */,
 				60A0C9622CE455ED004727B0 /* User.swift in Sources */,
 				60A0C96E2CE471BA004727B0 /* AddBucketListView.swift in Sources */,
+				6028ED512CE68160007A0647 /* ActivityListViewModel.swift in Sources */,
 				60A0C9642CE455F3004727B0 /* Activity.swift in Sources */,
+				6028ED4F2CE6814A007A0647 /* BucketListViewModel.swift in Sources */,
 				60A0C9702CE471C5004727B0 /* BucketListDetailView.swift in Sources */,
 				60A0C9742CE58903004727B0 /* AddActivityView.swift in Sources */,
 				60A0C9782CE58B05004727B0 /* ImagePicker.swift in Sources */,
 				6085B0072C93EA5B008B529D /* ContentView.swift in Sources */,
 				60A0C96A2CE46F1F004727B0 /* PersistenceController.swift in Sources */,
+				6028ED532CE68178007A0647 /* ActivityViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

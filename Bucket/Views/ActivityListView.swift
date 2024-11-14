@@ -5,38 +5,26 @@
 //  Created by Joel Ward on 11/13/24.
 //
 
-
 import SwiftUI
-import CoreData
 
 struct ActivityListView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var viewModel: ActivityListViewModel
+    private let bucketList: BucketList
 
-    @ObservedObject var bucketList: BucketList
-
-    // Fetch activities related to the selected bucket list
-    @FetchRequest private var activities: FetchedResults<Activity>
-
-    // State variable to control the presentation of the Add Activity view
     @State private var showAddActivityView = false
 
     init(bucketList: BucketList) {
         self.bucketList = bucketList
-
-        // Initialize the FetchRequest with a predicate to fetch activities for the selected bucket list
-        _activities = FetchRequest<Activity>(
-            sortDescriptors: [NSSortDescriptor(keyPath: \Activity.plannedDate, ascending: true)],
-            predicate: NSPredicate(format: "bucketList == %@", bucketList),
-            animation: .default
-        )
+        _viewModel = StateObject(wrappedValue: ActivityListViewModel(bucketList: bucketList))
     }
 
     var body: some View {
         List {
-            ForEach(activities) { activity in
-                NavigationLink(destination: ActivityDetailView(activity: activity)) {
+            ForEach(viewModel.activities) { activityData in
+                NavigationLink(destination: ActivityDetailView(activity: activityData.activity)) {
                     HStack {
-                        if let photos = activity.photos as? Set<Photo>, let photo = photos.first, let imageData = photo.imageData, let uiImage = UIImage(data: imageData) {
+                        if let imageData = activityData.imageData, let uiImage = UIImage(data: imageData) {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
@@ -51,57 +39,41 @@ struct ActivityListView: View {
                                 .foregroundColor(.gray)
                         }
                         VStack(alignment: .leading) {
-                            Text(activity.name ?? "Untitled Activity")
+                            Text(activityData.name)
                                 .font(.headline)
-                                .onAppear {
-                                    print("Activity ID: \(activity.activityID?.uuidString ?? "No ID"), Name: \(activity.name ?? "No Name")")
-                                }
-                            if let date = activity.plannedDate {
+                            if let date = activityData.plannedDate {
                                 Text("Planned Date: \(date, formatter: dateFormatter)")
                                     .font(.subheadline)
                             }
                         }
                     }
                 }
-
             }
-            .onDelete(perform: deleteActivities)
+            .onDelete(perform: viewModel.deleteActivity)
         }
-        .navigationTitle(bucketList.title ?? "Bucket List")
+        .navigationTitle("Activities")
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: {
-                    showAddActivityView.toggle()
-                }) {
-                    Label("Add Activity", systemImage: "plus")
-                }
-            }
             ToolbarItem(placement: .navigationBarLeading) {
                 EditButton()
             }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: { showAddActivityView = true }) {
+                    Label("Add Activity", systemImage: "plus")
+                }
+            }
         }
         .sheet(isPresented: $showAddActivityView) {
-            AddActivityView(bucketList: bucketList)
+            AddActivityView(viewModel: viewModel)
                 .environment(\.managedObjectContext, viewContext)
         }
-    }
-
-    // MARK: - Functions
-
-    private func deleteActivities(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { activities[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Handle the error appropriately
-                print("Error deleting activity: \(error.localizedDescription)")
+        .onAppear {
+            if viewModel.context == nil {
+                viewModel.context = viewContext
+                viewModel.fetchActivities()
             }
         }
     }
 
-    // Date formatter for displaying dates
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium

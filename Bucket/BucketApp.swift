@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct BucketApp: App {
+struct YourApp: App {
     let persistenceController = PersistenceController.shared
 
     var body: some Scene {

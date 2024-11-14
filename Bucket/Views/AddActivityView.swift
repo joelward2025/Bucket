@@ -9,17 +9,15 @@
 import SwiftUI
 
 struct AddActivityView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.presentationMode) var presentationMode
-
-    @ObservedObject var bucketList: BucketList
+    @ObservedObject var viewModel: ActivityListViewModel
 
     @State private var name: String = ""
     @State private var location: String = ""
     @State private var plannedDate: Date = Date()
     @State private var includeDate: Bool = false
-    @State private var showImagePicker = false
     @State private var selectedImageData: Data?
+    @State private var showImagePicker = false
 
     var body: some View {
         NavigationView {
@@ -27,11 +25,9 @@ struct AddActivityView: View {
                 Section(header: Text("Activity Name")) {
                     TextField("Enter activity name", text: $name)
                 }
-
                 Section(header: Text("Location")) {
                     TextField("Enter location", text: $location)
                 }
-
                 Section(header: Text("Planned Date")) {
                     Toggle(isOn: $includeDate) {
                         Text("Include Date")
@@ -47,13 +43,9 @@ struct AddActivityView: View {
                             .scaledToFit()
                             .frame(height: 200)
                             .cornerRadius(10)
-                            .onTapGesture {
-                                showImagePicker = true
-                            }
+                            .onTapGesture { showImagePicker = true }
                     } else {
-                        Button(action: {
-                            showImagePicker = true
-                        }) {
+                        Button(action: { showImagePicker = true }) {
                             HStack {
                                 Image(systemName: "photo")
                                 Text("Select Photo")
@@ -61,54 +53,24 @@ struct AddActivityView: View {
                         }
                     }
                 }
-
             }
             .navigationTitle("New Activity")
             .navigationBarItems(
-                leading: Button("Cancel") {
-                    presentationMode.wrappedValue.dismiss()
-                },
+                leading: Button("Cancel") { presentationMode.wrappedValue.dismiss() },
                 trailing: Button("Save") {
-                    addActivity()
+                    let date = includeDate ? plannedDate : nil
+                    viewModel.addActivity(
+                        name: name,
+                        location: location.isEmpty ? nil : location,
+                        plannedDate: date,
+                        imageData: selectedImageData
+                    )
+                    presentationMode.wrappedValue.dismiss()
                 }.disabled(name.isEmpty)
             )
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(selectedImageData: $selectedImageData)
             }
         }
-    }
-
-    private func addActivity() {
-        print("addActivity() called")
-        // Create a new Activity object
-        let newActivity = Activity(context: viewContext)
-        newActivity.activityID = UUID()
-        newActivity.name = name
-        newActivity.location = location.isEmpty ? nil : location
-        newActivity.isCompleted = false
-        if includeDate {
-            newActivity.plannedDate = plannedDate
-        }
-        newActivity.bucketList = bucketList // Link to the correct bucket list
-
-        // Add photo if an image is selected
-        if let imageData = selectedImageData {
-            let newPhoto = Photo(context: viewContext)
-            newPhoto.photoID = UUID()
-            newPhoto.imageData = imageData
-            newPhoto.uploadDate = Date()
-            newPhoto.activity = newActivity
-            newActivity.addToPhotos(newPhoto) // Use the accessor method
-        }
-
-        // Save the context
-        do {
-            try viewContext.save()
-            print("Activity saved successfully.")
-            presentationMode.wrappedValue.dismiss()
-        } catch {
-            print("Error saving new activity: \(error.localizedDescription)")
-        }
-        print("addActivity() completed")
     }
 }

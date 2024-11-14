@@ -5,29 +5,24 @@
 //  Created by Joel Ward on 11/13/24.
 //
 
-
 import SwiftUI
-import CoreData
 
 struct BucketListView: View {
     @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \BucketList.createdDate, ascending: true)],
-        animation: .default)
-    private var bucketLists: FetchedResults<BucketList>
+    @StateObject private var viewModel = BucketListViewModel()
 
     @State private var showAddBucketListView = false
+    @State private var newBucketListTitle = ""
 
     var body: some View {
         NavigationView {
             List {
-                ForEach(bucketLists) { bucketList in
-                    NavigationLink(destination: ActivityListView(bucketList: bucketList)) {
-                        Text(bucketList.title ?? "Untitled List")
+                ForEach(viewModel.bucketLists) { bucketListData in
+                    NavigationLink(destination: ActivityListView(bucketList: bucketListData.bucketList)) {
+                        Text(bucketListData.title)
                     }
                 }
-                .onDelete(perform: deleteBucketLists)
+                .onDelete(perform: viewModel.deleteBucketList)
             }
             .navigationTitle("My Bucket Lists")
             .toolbar {
@@ -35,28 +30,34 @@ struct BucketListView: View {
                     EditButton()
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        showAddBucketListView.toggle()
-                    }) {
+                    Button(action: { showAddBucketListView = true }) {
                         Label("Add List", systemImage: "plus")
                     }
                 }
             }
             .sheet(isPresented: $showAddBucketListView) {
-                AddBucketListView()
-                    .environment(\.managedObjectContext, viewContext)
+                NavigationView {
+                    Form {
+                        Section(header: Text("List Title")) {
+                            TextField("Enter title", text: $newBucketListTitle)
+                        }
+                    }
+                    .navigationTitle("New Bucket List")
+                    .navigationBarItems(
+                        leading: Button("Cancel") { showAddBucketListView = false },
+                        trailing: Button("Save") {
+                            viewModel.addBucketList(title: newBucketListTitle)
+                            newBucketListTitle = ""
+                            showAddBucketListView = false
+                        }.disabled(newBucketListTitle.isEmpty)
+                    )
+                }
             }
         }
-    }
-
-    private func deleteBucketLists(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { bucketLists[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                print("Error deleting bucket list: \(error.localizedDescription)")
+        .onAppear {
+            if viewModel.context == nil {
+                viewModel.context = viewContext
+                viewModel.fetchBucketLists()
             }
         }
     }
