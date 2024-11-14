@@ -87,15 +87,18 @@ struct AddActivityView: View {
         if includeDate {
             newActivity.plannedDate = plannedDate
         }
-        newActivity.bucketList = bucketList
+        newActivity.bucketList = bucketList // Ensure this is set correctly
 
-        // Create a Photo object if an image is selected
+        // Add photo if an image is selected
         if let imageData = selectedImageData {
             let newPhoto = Photo(context: viewContext)
             newPhoto.photoID = UUID()
             newPhoto.imageData = imageData
             newPhoto.uploadDate = Date()
-            newPhoto.activity = newActivity // Establish the relationship
+            newPhoto.activity = newActivity
+
+            // Use the generated accessor method to add the photo to the activity's photos relationship
+            newActivity.addToPhotos(newPhoto)
         }
 
         do {
@@ -105,5 +108,4 @@ struct AddActivityView: View {
             print("Error saving new activity: \(error.localizedDescription)")
         }
     }
-
 }

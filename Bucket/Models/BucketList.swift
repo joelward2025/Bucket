@@ -18,11 +18,28 @@ extension BucketList {
         return NSFetchRequest<BucketList>(entityName: "BucketList")
     }
 
+    @NSManaged public var createdDate: Date?
     @NSManaged public var listID: UUID?
     @NSManaged public var title: String?
-    @NSManaged public var createdDate: Date?
+    @NSManaged public var activities: NSSet?
     @NSManaged public var owner: User?
-    @NSManaged public var activities: Activity?
+
+}
+
+// MARK: Generated accessors for activities
+extension BucketList {
+
+    @objc(addActivitiesObject:)
+    @NSManaged public func addToActivities(_ value: Activity)
+
+    @objc(removeActivitiesObject:)
+    @NSManaged public func removeFromActivities(_ value: Activity)
+
+    @objc(addActivities:)
+    @NSManaged public func addToActivities(_ values: NSSet)
+
+    @objc(removeActivities:)
+    @NSManaged public func removeFromActivities(_ values: NSSet)
 
 }
 
