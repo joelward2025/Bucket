@@ -51,6 +51,8 @@ struct AddBucketListView: View {
     }
 }
 
+/*
 #Preview {
     AddBucketListView()
 }
+*/

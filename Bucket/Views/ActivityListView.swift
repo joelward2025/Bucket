@@ -38,6 +38,14 @@ struct ActivityListView: View {
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.gray)
                         }
+                        if activityData.isCompleted {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                        } else {
+                            // Optionally, display a placeholder for incomplete activities
+                            Image(systemName: "circle")
+                                .foregroundColor(.gray)
+                        }
                         VStack(alignment: .leading) {
                             Text(activityData.name)
                                 .font(.headline)

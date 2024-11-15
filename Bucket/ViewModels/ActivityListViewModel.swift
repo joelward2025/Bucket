@@ -8,21 +8,20 @@ class ActivityListViewModel: ObservableObject {
 
     init(bucketList: BucketList) {
         self.bucketList = bucketList
-        // The context will be set later
+        // Context will be set later in the view
     }
 
     func fetchActivities() {
         guard let context = context else { return }
-
         let request: NSFetchRequest<Activity> = Activity.fetchRequest()
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Activity.plannedDate, ascending: true)]
         request.predicate = NSPredicate(format: "bucketList == %@", bucketList)
-
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Activity.name, ascending: true)]
+        
         do {
-            let results = try context.fetch(request)
-            self.activities = results.map { ActivityViewData(activity: $0) }
+            let activities = try context.fetch(request)
+            self.activities = activities.map { ActivityViewData(activity: $0) }
         } catch {
-            print("Error fetching activities: \(error.localizedDescription)")
+            print("Failed to fetch activities: \(error.localizedDescription)")
         }
     }
 
