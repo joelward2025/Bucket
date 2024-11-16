@@ -79,6 +79,9 @@ struct ActivityListView: View {
                 viewModel.context = viewContext
                 viewModel.fetchActivities()
             }
+            else{
+                viewModel.fetchActivities()
+            }
         }
     }
 
